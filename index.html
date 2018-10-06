@@ -5,6 +5,11 @@
     </title>
     <link rel="stylesheet/less" type="text/css" href="css/index.less">
     <script src="js/less.min.js" type="text/javascript"></script>
+
+    <script src="js/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="js/moment.js" type="text/javascript"></script>
+    <script src="js/underscore-min.js" type="text/javascript"></script>
+    <script src="js/clndr.min.js" type="text/javascript"></script>
   </head>
   <body>
     <div class="body">
@@ -22,12 +27,35 @@
           <input type="text" id="country-code">
         </div>
         <div class="input-div">
-          <input type="button" value="Generate">
+          <input type="button" value="Generate" id="generate-button">
         </div>
       </div>
       <div class="calendar-container">
-        <div class="calendar"></div>
+        <div class="calendar">
+          <script type="text/template" id="template-calendar">
+            <div class="clndr">
+              <div class="clndr-header">
+                <% _.each(daysOfTheWeek, function(day) { %>
+                  <span class="header-day"><%= day %></span>
+                <% }); %>
+              </div>
+              <% _.each(months, function(cal) { %>                      
+                <div class="clndr-controls">
+                  <span class="month"><%= cal.month.format('MMMM YYYY') %></span>
+                </div>
+                <div class="clndr-grid">
+                  <div class="days">
+                  <% _.each(cal.days, function(day) { %>
+                    <span class="<%= day.classes %>"><%= day.day %></span>
+                  <% }); %>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </script>
+        </div>
       </div>
     </div>
   </body>
 </html>
+<script src="js/index.js" type="text/javascript"></script>

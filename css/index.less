@@ -1,6 +1,78 @@
+@green: #C2DB95;
+@blue-text: #606B77;
+@yellow: #F9FD08;
+@brown-text: #776C2E;
+@gray: #CCCCCD;
+@soft-green: #E8F6C3;
+
 .input-container{
     .input-div{
         height: 25px;
         margin: 10px 0;
+    }
+}
+
+.clndr{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 225px;
+    &-header{
+        display: flex;
+        flex-direction: row;
+        .header-day{
+            width: 20px;
+            height: 20px;
+            margin: 0 1px;
+            padding: 0 5px;
+            text-align: center;
+        }
+    }
+    &-controls{
+        display: flex;
+        flex-direction: row;
+        background: @soft-green;
+        width: 100%;
+        text-align: center;
+        .month{
+            padding: 5px 0;
+            width: 100%;
+        }
+    }
+    &-grid{
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 25px;
+        .days{
+            width: 225px;
+            display: inherit;
+            flex-direction: inherit;
+            flex-wrap: wrap;
+            .day{
+                width: 20px;
+                height: 20px;
+                text-align: center;
+                margin: 1px;
+                background: @green;
+                color: @blue-text;
+                padding: 5px;
+            }
+            .day.adjacent-month{
+                background: @gray;
+                color: @gray;
+                &.calendar-dow-{
+                    &0, &6{
+                        background: @gray;
+                        color: @gray;
+                    }
+                }
+            }
+            .day.calendar-dow-{
+                &0, &6{
+                    background: @yellow;
+                    color: @brown-text;
+                }
+            }
+        }
     }
 }
