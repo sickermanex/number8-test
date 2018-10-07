@@ -5,11 +5,13 @@ let numberOfDays = $('#days-number');
 let countryCode = $('#country-code');
 let clndrInstance = null;
 
-generateButton.on('click',()=>{
-    
+generateButton.on('click',()=>{    
     let date = dateIsValid(startDate.val());
     let days = parseInt(numberOfDays.val());
-    if(date != 'Invalid Date'){
+    let country = countryCode.val();
+    let formValid = errorMessagesHandler(date,days,country);
+
+    if(formValid){
         if(clndrInstance === null){
             clndrInstance = generateCalendar(date,days);
         }
@@ -20,12 +22,49 @@ generateButton.on('click',()=>{
     }
 });
 
-function generateCalendar(startDate,numberOfDays,countryCode){
+function errorMessagesHandler(date,days,code){
+    let valid = false;
+    if(date === 'Invalid Date'){
+        startDate.parent().find('span.error.required-field').addClass('active');
+        valid = false;
+    }
+    else{
+        startDate.parent().find('span.error.required-field').removeClass('active');
+        valid = true;
+    }
+    if(isNaN(days)){
+        numberOfDays.parent().find('span.error.required-field').addClass('active');
+        valid = false;
+    }
+    else{
+        numberOfDays.parent().find('span.error.required-field').removeClass('active');
+        valid = true;
+    }
+    if(code.length < 2){
+        countryCode.parent().find('span.error.required-field').addClass('active'); 
+        valid = false;
+    }
+    else{
+        countryCode.parent().find('span.error.required-field').removeClass('active');
+        valid = true;
+    }
+    return valid;
+}
+
+numberOfDays.on('keypress',e=>{
+    let charCode = e.which || e.keyCode;                        
+    if (charCode > 31 && (charCode < 47 || charCode > 57))
+        return false;
+    if (e.shiftKey) 
+        return false;
+    return true;
+})
+
+function generateCalendar(startDate,numberOfDays){
     let start = moment(startDate);
-    numberOfDays+=start.date();
     let end = moment(start.toDate()).add(numberOfDays,'days');
     let months = Math.round(moment(end.toDate()).diff(start.toDate(),'months',true));
-
+    months += (numberOfDays+start.date()-1 > start.daysInMonth() && numberOfDays+start.date()-1 % start.daysInMonth() >= 15) || months === 0 ? 1: 0;
 
     return calendar.clndr({
         daysOfTheWeek: ['S','M','T','W','T','F','S'],

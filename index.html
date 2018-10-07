@@ -17,14 +17,18 @@
         <div class="input-div">
           <label for="start-date">Start date: </label>
           <input type="text" id="start-date" placeholder="mm/dd/yyyy">
+          <span class="error invalid-date">Invalid date</span>
+          <span class="error required-field">Required field</span>
         </div>
         <div class="input-div">
           <label for="days-number">Number of days: </label>
-          <input type="text" id="days-number">
+          <input type="text" id="days-number" placeholder="15">
+          <span class="error required-field">Required field</span>
         </div>
         <div class="input-div">
           <label for="country-code">Country code: </label>
-          <input type="text" id="country-code">
+          <input type="text" id="country-code" placeholder="e.g. (US for United States)">
+          <span class="error required-field">Required field</span>
         </div>
         <div class="input-div">
           <input type="button" value="Generate" id="generate-button">
