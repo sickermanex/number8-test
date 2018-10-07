@@ -33,25 +33,27 @@
       <div class="calendar-container">
         <div class="calendar">
           <script type="text/template" id="template-calendar">
-            <div class="clndr">
               <div class="clndr-header">
                 <% _.each(daysOfTheWeek, function(day) { %>
                   <span class="header-day"><%= day %></span>
                 <% }); %>
               </div>
-              <% _.each(months, function(cal) { %>                      
+              <% _.each(months, function(cal) { %>
                 <div class="clndr-controls">
                   <span class="month"><%= cal.month.format('MMMM YYYY') %></span>
                 </div>
                 <div class="clndr-grid">
                   <div class="days">
-                  <% _.each(cal.days, function(day) { %>
+                  <% _.each(cal.days, function(day) {                    
+                    if(day.date.toDate() < extras.startDate.toDate() || day.date.toDate() > extras.endDate.toDate()){
+                      day.classes += ' out-range-date';
+                    }
+                    %>
                     <span class="<%= day.classes %>"><%= day.day %></span>
                   <% }); %>
                   </div>
                 </div>
               <% }); %>
-            </div>
           </script>
         </div>
       </div>

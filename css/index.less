@@ -15,6 +15,7 @@
         flex-direction: row;
         height: 25px;
         margin: 10px 0;
+        align-items: center;
         label{
             width: 150px;
         }
@@ -71,7 +72,7 @@
                     color: @blue-text;
                     padding: 5px;
                 }
-                .day.adjacent-month{
+                .day.adjacent-month, .day.out-range-date{
                     background: @gray;
                     color: @gray;
                     &.calendar-dow-{
