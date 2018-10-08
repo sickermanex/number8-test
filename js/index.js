@@ -1,10 +1,14 @@
+//Form inputs
 let generateButton = $('#generate-button'); 
 let calendar = $('.calendar');
 let startDate = $('#start-date');
 let numberOfDays = $('#days-number');
 let countryCode = $('#country-code');
+
+//CLNDR.js instance
 let clndrInstance = null;
 
+//Object witht the amount of days depending the month
 let daysMap = {
     1: 31,
     2: {
@@ -22,8 +26,11 @@ let daysMap = {
     11: 30,
     12: 31
 };
+//Avoiding edition of daysMap object
 Object.freeze(daysMap);
 
+//Create a new instance of a calendar and display it by clicking
+//"Generate" button
 generateButton.on('click',()=>{    
     let date = dateIsValid(startDate.val());
     let days = parseInt(numberOfDays.val());
@@ -41,6 +48,7 @@ generateButton.on('click',()=>{
     }
 });
 
+//Validate if inputs have the proper/correct values
 function errorMessagesHandler(date,days,code){
     let valid = false;
     if(date === 'Invalid Date'){
@@ -73,6 +81,7 @@ function errorMessagesHandler(date,days,code){
     return valid;
 }
 
+//Allow only numbers in number of days input
 numberOfDays.on('keypress',e=>{
     let charCode = e.which || e.keyCode;                        
     if (charCode > 31 && (charCode < 47 || charCode > 57))
@@ -82,6 +91,7 @@ numberOfDays.on('keypress',e=>{
     return true;
 })
 
+//Allow only letters in country code input
 countryCode.on('keypress',e=>{
     let charCode = e.keyCode;                        
     if (charCode > 31 && (charCode < 65 || charCode > 90))
@@ -110,6 +120,8 @@ function generateCalendar(startDate,numberOfDays){
     });
 }
 
+//Verify if the data provided is valid according the year (leap, normal),
+//month and number of days
 function dateIsValid(date){
     let validDate = false;
     let currentDate = 'Invalid Date';
