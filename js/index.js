@@ -5,6 +5,25 @@ let numberOfDays = $('#days-number');
 let countryCode = $('#country-code');
 let clndrInstance = null;
 
+let daysMap = {
+    1: 31,
+    2: {
+        'noleap': 28,
+        'leap': 29
+    },
+    3: 31,
+    4: 30,
+    5: 31,
+    6: 30,
+    7: 31,
+    8: 31,
+    9: 30,
+    10: 31,
+    11: 30,
+    12: 31
+};
+Object.freeze(daysMap);
+
 generateButton.on('click',()=>{    
     let date = dateIsValid(startDate.val());
     let days = parseInt(numberOfDays.val());
@@ -12,21 +31,22 @@ generateButton.on('click',()=>{
     let formValid = errorMessagesHandler(date,days,country);
 
     if(formValid){
-        if(clndrInstance === null){
-            clndrInstance = generateCalendar(date,days);
-        }
-        else{
-            clndrInstance.options.startWithMonth = moment(date);
-            clndrInstance.render();
-        }
+        /*if(clndrInstance !== null){
+            calendar.empty();
+            clndrInstance.destroy();
+            clndrInstance = null;
+        }*/
+        clndrInstance = generateCalendar(date,days,country);
+        clndrInstance.render();
     }
 });
 
 function errorMessagesHandler(date,days,code){
     let valid = false;
     if(date === 'Invalid Date'){
-        startDate.parent().find('span.error.required-field').addClass('active');
+        startDate.parent().find('span.error.required-field').addClass('active').html(date);
         valid = false;
+        return valid;
     }
     else{
         startDate.parent().find('span.error.required-field').removeClass('active');
@@ -35,6 +55,7 @@ function errorMessagesHandler(date,days,code){
     if(isNaN(days)){
         numberOfDays.parent().find('span.error.required-field').addClass('active');
         valid = false;
+        return valid;
     }
     else{
         numberOfDays.parent().find('span.error.required-field').removeClass('active');
@@ -43,6 +64,7 @@ function errorMessagesHandler(date,days,code){
     if(code.length < 2){
         countryCode.parent().find('span.error.required-field').addClass('active'); 
         valid = false;
+        return valid;
     }
     else{
         countryCode.parent().find('span.error.required-field').removeClass('active');
@@ -56,6 +78,13 @@ numberOfDays.on('keypress',e=>{
     if (charCode > 31 && (charCode < 47 || charCode > 57))
         return false;
     if (e.shiftKey) 
+        return false;
+    return true;
+})
+
+countryCode.on('keypress',e=>{
+    let charCode = e.keyCode;                        
+    if (charCode > 31 && (charCode < 65 || charCode > 90))
         return false;
     return true;
 })
@@ -84,23 +113,7 @@ function generateCalendar(startDate,numberOfDays){
 function dateIsValid(date){
     let validDate = false;
     let currentDate = 'Invalid Date';
-    let daysMap = {
-        1: 31,
-        2: {
-            'noleap': 28,
-            'leap': 29
-        },
-        3: 31,
-        4: 30,
-        5: 31,
-        6: 30,
-        7: 31,
-        8: 31,
-        9: 30,
-        10: 31,
-        11: 30,
-        12: 31
-    }
+    
     let splittedDate = date.split('/');
     if(splittedDate.length != 3){
         return currentDate;
